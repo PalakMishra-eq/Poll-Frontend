@@ -8,6 +8,7 @@ const SignupPage = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "",
   });
 
   const [error, setError] = useState("");
@@ -36,6 +37,7 @@ const SignupPage = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
+        role: formData.role,
       });
       if (response.status === 201) {
         alert("Signup successful! Redirecting to login...");
@@ -92,6 +94,17 @@ const SignupPage = () => {
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-700">Role</label>
+            <input
+              type="text"
+              name="role"
+              value={formData.role}
               onChange={handleChange}
               className="w-full p-2 border rounded"
               required

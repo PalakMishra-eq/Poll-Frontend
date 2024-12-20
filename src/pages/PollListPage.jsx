@@ -1,59 +1,60 @@
-// src/pages/PollListPage.js
+// src/pages/PollListPage.jsx
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const PollListPage = () => {
-  const [polls, setPolls] = useState([]); // State to store polls
-  const [search, setSearch] = useState(""); // State for search input
-  const [status, setStatus] = useState(""); // State for filter by status
-  const [sortBy, setSortBy] = useState("expirationDate"); // State for sort by field
-  const [sortOrder, setSortOrder] = useState("asc"); // State for sort order
-  const [error, setError] = useState(""); // State for error messages
+  const [polls, setPolls] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+  const [sortBy, setSortBy] = useState("expirationDate");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [error, setError] = useState("");
 
-  // Fetch polls from API
-  const fetchPolls = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/polls", {
-        params: {
-          search,
-          status,
-          sortBy,
-          sortOrder,
-        },
-      });
-      setPolls(response.data); // Update polls state
-      setError(""); // Clear error if successful
-    } catch (error) {
-      console.error("Error fetching polls:", error);
-      setError("Failed to load polls. Please try again later.");
-    }
-  };
-
-  // Fetch polls whenever search, status, sortBy, or sortOrder changes
+  // Fetch polls on component mount and whenever filters change
   useEffect(() => {
+    const fetchPolls = async () => {
+      try {
+        const response = await axios.get(
+          "https://interpolls.onrender.com/api/polls",
+          {
+            params: {
+              search: searchQuery,
+              status: filterStatus,
+              sortBy,
+              sortOrder,
+            },
+          }
+        );
+        setPolls(response.data);
+      } catch (error) {
+        console.error("Error fetching polls:", error);
+        setError("Failed to fetch polls. Please try again.");
+      }
+    };
+
     fetchPolls();
-  }, [search, status, sortBy, sortOrder]);
+  }, [searchQuery, filterStatus, sortBy, sortOrder]);
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold my-6">Poll List</h1>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-2xl font-bold mb-4">Poll List</h1>
 
-      {/* Search, Filter, and Sort Controls */}
-      <div className="flex flex-wrap justify-center gap-4 mb-6">
-        {/* Search Bar */}
+      {/* Search, Filter, and Sort Options */}
+      <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mb-6">
+        {/* Search */}
         <input
           type="text"
           placeholder="Search polls..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border border-gray-300 rounded px-4 py-2 w-64 focus:outline-none focus:ring focus:ring-blue-300"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 mb-4 md:mb-0"
         />
 
-        {/* Status Filter */}
+        {/* Filter */}
         <select
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 mb-4 md:mb-0"
         >
           <option value="">All</option>
           <option value="active">Active</option>
@@ -65,17 +66,18 @@ const PollListPage = () => {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+          className="border border-gray-300 rounded px-3 py-2 mb-4 md:mb-0"
         >
           <option value="expirationDate">Expiration Date</option>
           <option value="title">Title</option>
+          <option value="startDate">Start Date</option>
         </select>
 
         {/* Sort Order */}
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
-          className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+          className="border border-gray-300 rounded px-3 py-2"
         >
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
@@ -83,37 +85,32 @@ const PollListPage = () => {
       </div>
 
       {/* Error Message */}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500 mb-4">{error}</p>}
 
       {/* Poll List */}
-      <div className="w-full max-w-4xl">
-        {polls.length > 0 ? (
-          <ul className="bg-white shadow-md rounded-lg">
-            {polls.map((poll) => (
-              <li
-                key={poll._id}
-                className="border-b border-gray-200 px-6 py-4 hover:bg-gray-50"
-              >
-                <h2 className="text-xl font-bold">{poll.title}</h2>
-                <p className="text-gray-600">{poll.description}</p>
-                <p className="text-gray-500">
-                  <strong>Status:</strong>{" "}
-                  {poll.active
-                    ? poll.expirationDate > new Date().toISOString()
-                      ? "Active"
-                      : "Expired"
-                    : "Upcoming"}
-                </p>
-                <p className="text-gray-500">
-                  <strong>Expiration Date:</strong>{" "}
-                  {new Date(poll.expirationDate).toLocaleString()}
-                </p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-gray-500 text-center">No polls found.</p>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {polls.map((poll) => (
+          <div
+            key={poll._id}
+            className="bg-white p-4 rounded shadow-md hover:shadow-lg transition-shadow"
+          >
+            <h2 className="text-lg font-semibold">{poll.title}</h2>
+            <p className="text-gray-600">{poll.question}</p>
+            <p className="text-gray-500 text-sm mt-2">
+              Expiration: {new Date(poll.expirationDate).toLocaleString()}
+            </p>
+            <button
+              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() =>
+                poll.active
+                  ? alert("Navigate to Vote Page")
+                  : alert("Navigate to Results Page")
+              }
+            >
+              {poll.active ? "Vote" : "Results"}
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import LandingPage from "../pages/LandingPage";
 import LoginPage from "../pages/LoginPage";
+import PollCreationPage from "../pages/PollCreationPage";
 import PollListPage from "../pages/PollListPage";
 import RecoverAccountPage from "../pages/RecoverAccountPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
@@ -20,7 +21,9 @@ const AppRoutes = () => {
       <Route path="/recover-account" element={<RecoverAccountPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/profile" element={<UserProfilePage />} />
-      <Route path="/polls" element={<PollListPage />} />
+      <Route path="/poll-list" element={<PollListPage />} />
+      <Route path="/create-poll" element={<PollCreationPage />} />
+
 
     </Routes>
   );

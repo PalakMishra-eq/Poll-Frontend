@@ -1,6 +1,6 @@
 // src/pages/ProfilePage.js
-import axios from "../utils/api";
 import React, { useEffect, useState } from "react";
+import axios from "../utils/api";
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState({
