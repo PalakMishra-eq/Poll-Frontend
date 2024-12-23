@@ -21,6 +21,8 @@ const LoginPage = () => {
 
       // Save token to localStorage
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userId", response.data.userId);
+
 
       // Redirect to Profile Page
       navigate("/home");

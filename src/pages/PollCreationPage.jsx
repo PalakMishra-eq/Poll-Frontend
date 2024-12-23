@@ -35,7 +35,7 @@ const PollCreationPage = () => {
     const payload = {
       title,
       question,
-      choices: choices.map((choice) => ({ text: choice })),
+      choices,
       pollType,
       expirationDate,
     };
@@ -46,7 +46,7 @@ const PollCreationPage = () => {
         "https://interpolls.onrender.com/api/polls/create",
         payload,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `${token}` },
         }
       );
       setSuccess("Poll created successfully!");

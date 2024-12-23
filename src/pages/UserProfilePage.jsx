@@ -19,8 +19,8 @@ const ProfilePage = () => {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("https://interpolls.onrender.com/api/users/profile", {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.get("/api/users/profile", {
+        headers: { Authorization: `${token}` },
       });
       setProfileData(response.data);
       setBio(response.data.bio);
@@ -47,11 +47,11 @@ const ProfilePage = () => {
 
         // Make the POST request to the backend with the profile picture and userId
         const response = await axios.post(
-            "/api/users/upload-profile-picture",
+            "/api/users/upload-profile",
             formData,
             {
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    "Authorization": `${token}`,
                     "Content-Type": "multipart/form-data",
                 }
             }
@@ -75,10 +75,10 @@ const ProfilePage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://localhost:5000/api/users/update-bio",
+        "/api/users/update-profile",
         { bio, interests: interests.split(",").map((i) => i.trim()) },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `${token}` },
         }
       );
       alert("Profile updated successfully");
