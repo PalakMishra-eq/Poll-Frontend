@@ -27,7 +27,7 @@ const AppRoutes = () => {
       <Route path="/poll-list" element={<PollListPage />} />
       <Route path="/create-poll" element={<PollCreationPage />} />
       <Route path="/vote/:pollId" element={<VotePage />} />
-      <Route path="/polls/results/:pollId" element={<PollResultsPage />} />
+      <Route path="/polls/:pollId/results" element={<PollResultsPage />} />
       <Route path="/vote-history" element={<VoteHistoryPage />} />
       
 

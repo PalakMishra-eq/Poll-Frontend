@@ -35,7 +35,7 @@ const PollCreationPage = () => {
     const payload = {
       title,
       question,
-      choices: choices.map((choice) => ({ text: choice })),
+      choices,
       pollType,
       expirationDate,
     };

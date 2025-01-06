@@ -4,78 +4,96 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const PollResultsPage = () => {
-  const { id } = useParams(); // Get poll ID from route parameters
-  const navigate = useNavigate();
-
-  const [pollData, setPollData] = useState(null);
+  const { pollId } = useParams(); // Get poll ID from URL params
+  const [pollResults, setPollResults] = useState(null);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPollResults = async () => {
       try {
+        const token = localStorage.getItem("token");
+
         const response = await axios.get(
-          `https://interpolls.onrender.com/api/polls/results/${id}`
+          `https://interpolls.onrender.com/api/polls/${pollId}/results`,
+          { headers: { Authorization: `${token}` } }
         );
-        setPollData(response.data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching poll results:", err);
-        setError("Failed to fetch poll results. Please try again.");
-        setLoading(false);
+        setPollResults(response.data);
+      } catch (error) {
+        console.error("Error fetching poll results:", error);
+        setError(
+          error.response?.data?.error || "Failed to fetch poll results."
+        );
       }
     };
 
     fetchPollResults();
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-lg text-gray-600">Loading poll results...</p>
-      </div>
-    );
-  }
+  }, [pollId]);
 
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-lg text-red-500">{error}</p>
+        <p className="text-red-500 text-xl">{error}</p>
+      </div>
+    );
+  }
+
+  if (!pollResults) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <p className="text-gray-600 text-xl">Loading poll results...</p>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-6">{pollData.title}</h1>
-      <p className="text-gray-600 mb-4">{pollData.question}</p>
-      <p className="text-gray-500 text-sm mb-6">
-        Total Votes: <strong>{pollData.totalVotes}</strong>
-      </p>
+      <div className="bg-white p-6 rounded shadow-md">
+        <h1 className="text-2xl font-bold mb-4">{pollResults.pollTitle}</h1>
+        <p className="text-gray-600 mb-6">{pollResults.pollDescription}</p>
+        <p className="text-lg font-medium mb-4">
+          Total Votes: {pollResults.totalVotes}
+        </p>
 
-      {/* Choices and Results */}
-      <div className="space-y-4">
-        {pollData.choices.map((choice) => (
-          <div
-            key={choice._id}
-            className="bg-white p-4 rounded shadow-md hover:shadow-lg transition-shadow"
-          >
-            <h2 className="text-lg font-semibold">{choice.text}</h2>
-            <p className="text-gray-600">
-              Votes: <strong>{choice.voteCount}</strong>
-            </p>
-            <p className="text-gray-500 text-sm">
-              Percentage: <strong>{choice.percentage}%</strong>
-            </p>
-          </div>
-        ))}
-      </div>
+        <table className="table-auto w-full border-collapse border border-gray-300">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border border-gray-300 px-4 py-2 text-left">
+                Choice
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left">
+                Vote Count
+              </th>
+              <th className="border border-gray-300 px-4 py-2 text-left">
+                Percentage
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {pollResults.results.map((result, index) => (
+              <tr
+                key={index}
+                className={`${
+                  index === 0 ? "bg-green-100" : "bg-white"
+                } hover:bg-gray-100`}
+              >
+                <td className="border border-gray-300 px-4 py-2">
+                  {result.choiceText}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {result.voteCount}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {result.percentage.toFixed(2)}%
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      {/* Back Button */}
-      <div className="mt-6">
         <button
-          onClick={() => navigate("/polls")}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => navigate("/poll-list")}
+          className="mt-6 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
         >
           Back to Poll List
         </button>

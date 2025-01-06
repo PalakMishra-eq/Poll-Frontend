@@ -47,7 +47,7 @@ const ProfilePage = () => {
 
         // Make the POST request to the backend with the profile picture and userId
         const response = await axios.post(
-            "/api/users/upload-profile-picture",
+            "/api/users/upload-profile",
             formData,
             {
                 headers: {
