@@ -18,7 +18,7 @@ const ResetPasswordPage = () => {
     try {
       // Call backend API to reset the password
       const response = await axios.post(
-        "http://localhost:5000/api/auth/reset-password",
+        "https://interpolls.onrender.com/api/auth/reset-password",
         { token: resetToken, newPassword }
       );
 

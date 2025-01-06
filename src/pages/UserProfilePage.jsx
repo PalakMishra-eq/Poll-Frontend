@@ -20,7 +20,7 @@ const ProfilePage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get("https://interpolls.onrender.com/api/users/profile", {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: ` ${token}` },
       });
       setProfileData(response.data);
       setBio(response.data.bio);
@@ -51,7 +51,7 @@ const ProfilePage = () => {
             formData,
             {
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    "Authorization": ` ${token}`,
                     "Content-Type": "multipart/form-data",
                 }
             }
@@ -75,10 +75,10 @@ const ProfilePage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "http://localhost:5000/api/users/update-bio",
+        "https://interpolls.onrender.com/api/users/update-profile",
         { bio, interests: interests.split(",").map((i) => i.trim()) },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: ` ${token}` },
         }
       );
       alert("Profile updated successfully");

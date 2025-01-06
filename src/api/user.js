@@ -3,8 +3,8 @@ import axios from "axios";
 // API call to get the user profile data
 export const getProfile = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/api/user/profile", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    const response = await axios.get("https://interpolls.onrender.com/api/user/profile", {
+      headers: { Authorization:  ${localStorage.getItem("token")}` },
     });
     return response.data;
   } catch (error) {
@@ -21,11 +21,11 @@ export const updateProfile = async (updatedData) => {
 
   try {
     const response = await axios.put(
-      "http://localhost:5000/api/user/profile",
+      "https://interpolls.onrender.com/api/user/profile",
       formData,
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: ` ${localStorage.getItem("token")}`,
           "Content-Type": "multipart/form-data",
         },
       }

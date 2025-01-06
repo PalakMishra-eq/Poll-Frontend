@@ -1,6 +1,9 @@
 // src/pages/PollListPage.jsx
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
 
 const PollListPage = () => {
   const [polls, setPolls] = useState([]);
@@ -9,6 +12,8 @@ const PollListPage = () => {
   const [sortBy, setSortBy] = useState("expirationDate");
   const [sortOrder, setSortOrder] = useState("asc");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+
 
   // Fetch polls on component mount and whenever filters change
   useEffect(() => {
@@ -34,6 +39,7 @@ const PollListPage = () => {
 
     fetchPolls();
   }, [searchQuery, filterStatus, sortBy, sortOrder]);
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -87,6 +93,7 @@ const PollListPage = () => {
       {/* Error Message */}
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
+
       {/* Poll List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {polls.map((poll) => (
@@ -100,15 +107,15 @@ const PollListPage = () => {
               Expiration: {new Date(poll.expirationDate).toLocaleString()}
             </p>
             <button
-              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() =>
-                poll.active
-                  ? alert("Navigate to Vote Page")
-                  : alert("Navigate to Results Page")
-              }
-            >
-              {poll.active ? "Vote" : "Results"}
-            </button>
+      className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      onClick={() =>
+        poll.isActive
+          ? navigate(`/vote/${poll._id}`) // Navigate to vote page
+          : navigate(`/polls/${poll._id}/results`) // Navigate to results page
+      }
+    >
+      {poll.isActive ? "Vote" : "Results"}
+    </button>
           </div>
         ))}
       </div>

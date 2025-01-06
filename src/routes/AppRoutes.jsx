@@ -5,10 +5,13 @@ import LandingPage from "../pages/LandingPage";
 import LoginPage from "../pages/LoginPage";
 import PollCreationPage from "../pages/PollCreationPage";
 import PollListPage from "../pages/PollListPage";
+import PollResultsPage from "../pages/PollResultsPage";
+import VotePage from "../pages/PollVotePage";
 import RecoverAccountPage from "../pages/RecoverAccountPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import SignupPage from "../pages/SignupPage";
 import UserProfilePage from "../pages/UserProfilePage";
+import VoteHistoryPage from "../pages/VoteHistoryPage";
 
 
 const AppRoutes = () => {
@@ -23,7 +26,10 @@ const AppRoutes = () => {
       <Route path="/profile" element={<UserProfilePage />} />
       <Route path="/poll-list" element={<PollListPage />} />
       <Route path="/create-poll" element={<PollCreationPage />} />
-
+      <Route path="/vote/:pollId" element={<VotePage />} />
+      <Route path="/polls/results/:pollId" element={<PollResultsPage />} />
+      <Route path="/vote-history" element={<VoteHistoryPage />} />
+      
 
     </Routes>
   );

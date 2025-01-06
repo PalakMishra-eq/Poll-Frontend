@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://interpolls.onrender.com/api";
 
 export const fetchPolls = async () => {
   const response = await axios.get(`${BASE_URL}/polls`);
