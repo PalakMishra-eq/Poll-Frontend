@@ -68,26 +68,26 @@ const PollListPage = () => {
           <option value="upcoming">Upcoming</option>
         </select>
 
-        {/* Sort By */}
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-2 mb-4 md:mb-0"
-        >
-          <option value="expirationDate">Expiration Date</option>
-          <option value="title">Title</option>
-          <option value="startDate">Start Date</option>
-        </select>
+        {/* Combined Sort Dropdown */}
+<select
+  value={`${sortBy}-${sortOrder}`} // Combine sort field and order in the value
+  onChange={(e) => {
+    const [field, order] = e.target.value.split("-");
+    setSortBy(field);
+    setSortOrder(order);
+  }}
+  className="border border-gray-300 rounded px-3 py-2 mb-4 md:mb-0"
+>
+  <optgroup label="Sort By">
+    <option value="startDate-asc">Start Date (Ascending)</option>
+    <option value="startDate-desc">Start Date (Descending)</option>
+    <option value="expirationDate-asc">Expiration Date (Ascending)</option>
+    <option value="expirationDate-desc">Expiration Date (Descending)</option>
+    <option value="title-asc">Title (A-Z)</option>
+    <option value="title-desc">Title (Z-A)</option>
+  </optgroup>
+</select>
 
-        {/* Sort Order */}
-        <select
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-2"
-        >
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
       </div>
 
       {/* Error Message */}
