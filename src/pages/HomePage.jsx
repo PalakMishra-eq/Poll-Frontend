@@ -5,6 +5,13 @@ const HomePage = () => {
   const navigate = useNavigate();
   
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    navigate("/");
+
+  }
+
   const handlePollList = () => {
     navigate("/poll-list");
   };
@@ -46,6 +53,12 @@ const HomePage = () => {
             className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded"
           >
             Profile
+          </button>
+          <button
+            onClick={handleLogout}
+            className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded"
+          >
+            Logout
           </button>
         </div>
       </header>
