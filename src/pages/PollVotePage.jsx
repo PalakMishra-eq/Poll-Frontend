@@ -151,6 +151,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 const VotePage = () => {
   const { pollId } = useParams();
@@ -235,6 +237,9 @@ const VotePage = () => {
   };
 
   return (
+    <div className="min-h-screen flex flex-col bg-gray-100">
+    {/* Header */}
+    <Header />
     <div className="min-h-screen bg-gray-100 p-6 relative">
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {success && <p className="text-green-500 mb-4">{success}</p>}
@@ -276,6 +281,9 @@ const VotePage = () => {
       >
         Report Poll
       </button>
+    </div>
+     {/* Footer */}
+     <Footer />
     </div>
   );
 };

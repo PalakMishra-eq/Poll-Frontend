@@ -2,6 +2,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 const PollResultsPage = () => {
   const { pollId } = useParams(); // Get poll ID from URL params
@@ -47,6 +49,9 @@ const PollResultsPage = () => {
   }
 
   return (
+    <div className="min-h-screen flex flex-col bg-gray-100">
+    {/* Header */}
+    <Header />
     <div className="min-h-screen bg-gray-100 p-6">
       <div className="bg-white p-6 rounded shadow-md">
         <h1 className="text-2xl font-bold mb-4">{pollResults.pollTitle}</h1>
@@ -98,6 +103,9 @@ const PollResultsPage = () => {
           Back to Poll List
         </button>
       </div>
+    </div>
+    {/* Footer */}
+    <Footer />
     </div>
   );
 };

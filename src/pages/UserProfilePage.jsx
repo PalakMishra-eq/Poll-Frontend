@@ -1,5 +1,7 @@
 // src/pages/ProfilePage.js
 import React, { useEffect, useState } from "react";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 import axios from "../utils/api";
 
 const ProfilePage = () => {
@@ -93,6 +95,9 @@ const ProfilePage = () => {
   }, []);
 
   return (
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      {/* Header */}
+      <Header />
     <div className="min-h-screen bg-gray-100 flex flex-col items-center">
       <h1 className="text-3xl font-bold mt-6">Profile</h1>
       <div className="w-full max-w-4xl bg-white shadow-md rounded-lg p-6 mt-6">
@@ -169,6 +174,9 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+    </div>
+    {/* Footer */}
+    <Footer />
     </div>
   );
 };

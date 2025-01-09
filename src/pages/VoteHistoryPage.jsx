@@ -1,5 +1,7 @@
 // src/pages/VoteHistoryPage.jsx
 import React, { useEffect, useState } from "react";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 import axios from "../utils/api"; // Adjust this path if needed
 
 const VoteHistoryPage = () => {
@@ -41,6 +43,9 @@ const VoteHistoryPage = () => {
   }
 
   return (
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      {/* Header */}
+      <Header />
     <div className="min-h-screen bg-gray-100 p-6">
       <h1 className="text-2xl font-bold mb-4">Vote History</h1>
 
@@ -82,6 +87,9 @@ const VoteHistoryPage = () => {
         </div>
       )}
     </div>
+     {/* Footer */}
+     <Footer />
+     </div>
   );
 };
 

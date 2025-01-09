@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import ProtectedRoute from "../components/ProtectedRoute";
 import HomePage from "../pages/HomePage";
 import LandingPage from "../pages/LandingPage";
 import LoginPage from "../pages/LoginPage";
@@ -20,16 +21,16 @@ const AppRoutes = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-      <Route path="/home" element={<HomePage />} />
       <Route path="/recover-account" element={<RecoverAccountPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
-      <Route path="/profile" element={<UserProfilePage />} />
-      <Route path="/poll-list" element={<PollListPage />} />
-      <Route path="/create-poll" element={<PollCreationPage />} />
-      <Route path="/vote/:pollId" element={<VotePage />} />
-      <Route path="/polls/:pollId/results" element={<PollResultsPage />} />
-      <Route path="/vote-history" element={<VoteHistoryPage />} />
-      
+
+      <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+      <Route path="/poll-list" element={<ProtectedRoute><PollListPage /></ProtectedRoute>} />
+      <Route path="/create-poll" element={<ProtectedRoute><PollCreationPage /></ProtectedRoute>} />
+      <Route path="/vote/:pollId" element={<ProtectedRoute><VotePage /></ProtectedRoute>} />
+      <Route path="/polls/:pollId/results" element={<ProtectedRoute><PollResultsPage /></ProtectedRoute>} />
+      <Route path="/vote-history" element={<ProtectedRoute><VoteHistoryPage /></ProtectedRoute>} />
 
     </Routes>
   );
