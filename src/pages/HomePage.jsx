@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role) {
+      setUserRole(role);
+    }
+  }, []);
   
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("role");
     navigate("/");
 
   }
@@ -30,12 +39,14 @@ const HomePage = () => {
       <header className="bg-blue-500 p-4 text-white">
         <h1 className="text-3xl font-bold">Poll App</h1>
         <div className="flex justify-end space-x-4 mt-4">
-        <button
-          onClick={() => navigate("/create-poll")}
-          className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded"
-        >
-          Create Poll
-         </button>
+        {userRole === "Admin" && (
+            <button
+              onClick={() => navigate("/create-poll")}
+              className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded"
+            >
+              Create Poll
+            </button>
+          )}
           <button
             onClick={handlePollList}
             className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded"

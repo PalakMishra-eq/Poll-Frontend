@@ -161,6 +161,7 @@ const VotePage = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [reportSuccess, setReportSuccess] = useState("");
+  const [userRole, setUserRole] = useState(""); // To determine admin or voter
   const navigate = useNavigate();
 
   // Fetch poll details
@@ -168,6 +169,9 @@ const VotePage = () => {
     const fetchPollDetails = async () => {
       try {
         const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+        setUserRole(role);
+
         const response = await axios.get(
           `https://interpolls.onrender.com/api/polls/${pollId}/details`,
           {
@@ -225,6 +229,25 @@ const VotePage = () => {
     }
   };
 
+  // Handle poll deletion (Admin only)
+  const handleDeletePoll = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.delete(
+        `https://interpolls.onrender.com/api/polls/${pollId}/delete`,
+        { headers: { Authorization: `${token}` } }
+      );
+      setReportSuccess(response.data.message || "Poll deleted successfully.");
+      setTimeout(() => {
+        navigate("/poll-list"); // Redirect to poll list
+      }, 2000); // Delay for feedback
+    } catch (error) {
+      console.error("Error deleting poll:", error);
+      setError("Failed to delete poll. Please try again.");
+    }
+  };
+
   // Handle Choice Selection
   const handleChoiceChange = (choiceId, checked) => {
     if (poll.pollType === "single-choice") {
@@ -274,14 +297,23 @@ const VotePage = () => {
         </div>
       )}
 
-      {/* Report Button */}
-      <button
-        onClick={handleReportPoll}
-        className="absolute bottom-4 right-4 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded shadow-md"
-      >
-        Report Poll
-      </button>
-    </div>
+      {/* Conditional Buttons */}
+      {userRole === "Admin" ? (
+          <button
+            onClick={handleDeletePoll}
+            className="absolute bottom-4 right-4 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded shadow-md"
+          >
+            Delete Poll
+          </button>
+        ) : (
+          <button
+            onClick={handleReportPoll}
+            className="absolute bottom-4 right-4 bg-yellow-500 hover:bg-yellow-700 text-white py-2 px-4 rounded shadow-md"
+          >
+            Report Poll
+          </button>
+        )}
+      </div>
      {/* Footer */}
      <Footer />
     </div>

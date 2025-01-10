@@ -22,6 +22,7 @@ const LoginPage = () => {
       // Save token to localStorage
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userId", response.data.userId);
+      localStorage.setItem("role", response.data.userRole);
 
 
       // Redirect to Profile Page
